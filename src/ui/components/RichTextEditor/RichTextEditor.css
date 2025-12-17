@@ -1,0 +1,177 @@
+/* Estilos base del editor */
+.tiptap-editor {
+  border: 2px solid;
+  border-color: var(--tw-color-neutral-300);
+  border-radius: 0.75rem;
+  min-height: 200px;
+  max-width: none;
+  overflow: hidden;
+}
+
+/* Dark mode */
+.dark .tiptap-editor {
+  border-color: var(--tw-color-neutral-700);
+  background-color: var(--tw-color-neutral-900);
+}
+
+/* Prose (Tailwind Typography) */
+.tiptap-editor {
+  --tw-prose-body: currentColor;
+  --tw-prose-headings: currentColor;
+  --tw-prose-links: currentColor;
+  --tw-prose-bold: currentColor;
+  --tw-prose-counters: currentColor;
+  --tw-prose-bullets: currentColor;
+  --tw-prose-quotes: currentColor;
+  --tw-prose-quote-borders: currentColor;
+  --tw-prose-captions: currentColor;
+  --tw-prose-code: currentColor;
+  --tw-prose-pre-code: currentColor;
+  --tw-prose-pre-bg: transparent;
+}
+
+/* Focus */
+.tiptap-editor *:focus {
+  outline: none;
+}
+
+/* Placeholder */
+.tiptap-editor .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: var(--tw-color-neutral-400);
+  pointer-events: none;
+  float: left;
+}
+
+.dark .tiptap-editor .ProseMirror p.is-editor-empty:first-child::before {
+  color: var(--tw-color-neutral-600);
+}
+
+/* Imágenes */
+.tiptap-editor img {
+  border-radius: 0.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Títulos */
+.tiptap-editor h1 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.tiptap-editor h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.tiptap-editor h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Listas */
+.tiptap-editor ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.tiptap-editor ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Blockquote */
+.tiptap-editor blockquote {
+  border-left-width: 4px;
+  border-left-color: var(--tw-color-neutral-300);
+  padding-left: 1rem;
+  font-style: italic;
+  color: var(--tw-color-neutral-700);
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.dark .tiptap-editor blockquote {
+  border-left-color: var(--tw-color-neutral-600);
+  color: var(--tw-color-neutral-300);
+}
+
+/* Código inline */
+.tiptap-editor code {
+  background-color: var(--tw-color-neutral-200);
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.dark .tiptap-editor code {
+  background-color: var(--tw-color-neutral-800);
+}
+
+/* Bloques de código */
+.tiptap-editor pre {
+  background-color: var(--tw-color-neutral-900);
+  color: var(--tw-color-neutral-100);
+  padding: 1rem;
+  border-radius: 0.75rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tiptap-editor pre code {
+  background: transparent;
+  padding: 0;
+  color: var(--tw-color-neutral-100);
+}
+
+/* Tablas */
+.tiptap-editor table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tiptap-editor table th,
+.tiptap-editor table td {
+  border: 1px solid var(--tw-color-neutral-300);
+  padding: 0.5rem;
+}
+
+.dark .tiptap-editor table th,
+.dark .tiptap-editor table td {
+  border-color: var(--tw-color-neutral-700);
+}
+
+.tiptap-editor table tr:nth-child(even) {
+  background-color: var(--tw-color-neutral-100);
+}
+
+.dark .tiptap-editor table tr:nth-child(even) {
+  background-color: var(--tw-color-neutral-800);
+}
+
+/* Links */
+.tiptap-editor a {
+  color: var(--tw-color-blue-600);
+  text-decoration: underline;
+}
+
+.dark .tiptap-editor a {
+  color: var(--tw-color-blue-400);
+}
