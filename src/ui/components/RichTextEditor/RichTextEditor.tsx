@@ -1,39 +1,27 @@
 import Placeholder from "@tiptap/extension-placeholder";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Paragraph from "@tiptap/extension-paragraph";
 import "./RichTextEditor.css";
 import { MenuBar } from "./MenuBar/MenuBar";
 import Image from "@tiptap/extension-image";
 
-const CustomParagraph = Paragraph.extend({
-  addAttributes() {
-    return {
-      style: {
-        default: "margin: 0 0 0.25rem 0;", // 👈 nuevo spacing
-      },
-    };
-  },
-});
-
 export const RichTextEditor = () => {
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({
-        paragraph: false,
-      }),
-      CustomParagraph,
+      StarterKit.configure(),
       Placeholder.configure({
-        placeholder: "Write: ",
+        placeholder: "Empieza a escribir el caso de estudio...",
+        emptyEditorClass:
+          "before:content-[attr(data-placeholder)] before:text-slate-400/60 before:pointer-events-none",
       }),
       Image,
     ],
   });
 
   return (
-    <div className="tiptap-editor bg-gray-200">
+    <div className="tiptap-editor">
       <MenuBar editor={editor} />
-      <EditorContent className="px-5 py-3 prose" editor={editor} />
+      <EditorContent editor={editor} />
     </div>
   );
 };

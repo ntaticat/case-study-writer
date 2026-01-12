@@ -59,11 +59,7 @@ export const MenuBar = ({ editor }: MenuBarProps) => {
   const disabledBtn = "opacity-40 cursor-not-allowed";
 
   return (
-    <div
-      className="
-        sticky top-0 flex flex-wrap items-center gap-1 mb-3 p-2 border-b-2 border-blackbg-gray-200
-      "
-    >
+    <div className="sticky top-0 flex flex-wrap items-center gap-1 mb-3 p-2">
       {/* MARKS */}
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
