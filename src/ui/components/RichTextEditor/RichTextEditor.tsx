@@ -5,7 +5,11 @@ import "./RichTextEditor.css";
 import { MenuBar } from "./MenuBar/MenuBar";
 import Image from "@tiptap/extension-image";
 
-export const RichTextEditor = () => {
+type RichTextEditorProps = {
+  initialContent?: string;
+};
+
+export const RichTextEditor = ({ initialContent }: RichTextEditorProps) => {
   const editor = useEditor({
     extensions: [
       StarterKit.configure(),
@@ -16,6 +20,7 @@ export const RichTextEditor = () => {
       }),
       Image,
     ],
+    content: initialContent,
   });
 
   return (

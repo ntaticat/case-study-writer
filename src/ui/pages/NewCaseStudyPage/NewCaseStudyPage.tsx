@@ -1,3 +1,5 @@
+import { ProjectImage } from "@/ui/components/ProjectImage/ProjectImage";
+import { ProjectLinks } from "@/ui/components/ProjectLinks/ProjectLinks";
 import { RichTextEditor } from "@/ui/components/RichTextEditor/RichTextEditor";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -49,6 +51,13 @@ const NewCaseStudyPage = () => {
 
         {/* Editor */}
         <RichTextEditor />
+
+        {/* Separador */}
+        <div className="border-t border-slate-200 mt-8" />
+
+        {/* Nuevas secciones */}
+        <ProjectImage />
+        <ProjectLinks />
       </div>
     </div>
   );
