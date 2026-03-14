@@ -20,8 +20,8 @@ export const RichTextEditor = () => {
 
   return (
     <div className="tiptap-editor">
-      <MenuBar editor={editor} />
-      <EditorContent editor={editor} />
+      {editor && <MenuBar editor={editor} />}
+      <EditorContent editor={editor} className="pt-4 min-h-[60vh]" />
     </div>
   );
 };

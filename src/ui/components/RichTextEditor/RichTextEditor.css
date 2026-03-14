@@ -201,3 +201,10 @@
 .dark .tiptap-editor .ProseMirror a {
   color: rgb(96 165 250);
 }
+
+.tiptap-editor .ProseMirror.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: rgb(148 163 184 / 0.6);
+  pointer-events: none;
+  float: left;
+}

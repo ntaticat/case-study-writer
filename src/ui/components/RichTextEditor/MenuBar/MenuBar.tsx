@@ -11,201 +11,218 @@ import {
   Quote,
   Undo2,
   Redo2,
+  Image as ImageIcon,
 } from "lucide-react";
-import { Image as ImageIcon } from "lucide-react";
 import { Editor, useEditorState } from "@tiptap/react";
 
-type MenuBarProps = {
-  editor: Editor;
+type MenuBarProps = { editor: Editor };
+
+const Divider = () => (
+  <div className="w-px h-5 bg-slate-200 dark:bg-slate-700 mx-0.5" />
+);
+
+type ToolButtonProps = {
+  onClick: () => void;
+  disabled?: boolean;
+  active?: boolean;
+  children: React.ReactNode;
+  title?: string;
 };
 
+const ToolButton = ({
+  onClick,
+  disabled,
+  active,
+  children,
+  title,
+}: ToolButtonProps) => (
+  <button
+    onClick={onClick}
+    disabled={disabled}
+    title={title}
+    className={`
+      flex items-center justify-center w-8 h-8 rounded transition-colors text-sm
+      ${
+        active
+          ? "bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200"
+          : "text-slate-500 hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+      }
+      ${disabled ? "opacity-30 cursor-not-allowed pointer-events-none" : "cursor-pointer"}
+    `}
+  >
+    {children}
+  </button>
+);
+
 export const MenuBar = ({ editor }: MenuBarProps) => {
-  const editorState = useEditorState({
-    selector: (ctx) => {
-      return {
-        isBold: ctx.editor.isActive("bold") ?? false,
-        canBold: ctx.editor.can().chain().toggleBold().run() ?? false,
-        isItalic: ctx.editor.isActive("italic") ?? false,
-        canItalic: ctx.editor.can().chain().toggleItalic().run() ?? false,
-        isStrike: ctx.editor.isActive("strike") ?? false,
-        canStrike: ctx.editor.can().chain().toggleStrike().run() ?? false,
-        isCode: ctx.editor.isActive("code") ?? false,
-        canCode: ctx.editor.can().chain().toggleCode().run() ?? false,
-        canClearMarks: ctx.editor.can().chain().unsetAllMarks().run() ?? false,
-        isParagraph: ctx.editor.isActive("paragraph") ?? false,
-        isHeading1: ctx.editor.isActive("heading", { level: 1 }) ?? false,
-        isHeading2: ctx.editor.isActive("heading", { level: 2 }) ?? false,
-        isHeading3: ctx.editor.isActive("heading", { level: 3 }) ?? false,
-        isHeading4: ctx.editor.isActive("heading", { level: 4 }) ?? false,
-        isHeading5: ctx.editor.isActive("heading", { level: 5 }) ?? false,
-        isHeading6: ctx.editor.isActive("heading", { level: 6 }) ?? false,
-        isBulletList: ctx.editor.isActive("bulletList") ?? false,
-        isOrderedList: ctx.editor.isActive("orderedList") ?? false,
-        isCodeBlock: ctx.editor.isActive("codeBlock") ?? false,
-        isBlockquote: ctx.editor.isActive("blockquote") ?? false,
-        canUndo: ctx.editor.can().chain().undo().run() ?? false,
-        canRedo: ctx.editor.can().chain().redo().run() ?? false,
-      };
-    },
+  const s = useEditorState({
     editor,
+    selector: (ctx) => ({
+      isBold: ctx.editor.isActive("bold"),
+      canBold: ctx.editor.can().chain().toggleBold().run(),
+      isItalic: ctx.editor.isActive("italic"),
+      canItalic: ctx.editor.can().chain().toggleItalic().run(),
+      isStrike: ctx.editor.isActive("strike"),
+      canStrike: ctx.editor.can().chain().toggleStrike().run(),
+      isCode: ctx.editor.isActive("code"),
+      canCode: ctx.editor.can().chain().toggleCode().run(),
+      isParagraph: ctx.editor.isActive("paragraph"),
+      isH1: ctx.editor.isActive("heading", { level: 1 }),
+      isH2: ctx.editor.isActive("heading", { level: 2 }),
+      isH3: ctx.editor.isActive("heading", { level: 3 }),
+      isBulletList: ctx.editor.isActive("bulletList"),
+      isOrderedList: ctx.editor.isActive("orderedList"),
+      isCodeBlock: ctx.editor.isActive("codeBlock"),
+      isBlockquote: ctx.editor.isActive("blockquote"),
+      canUndo: ctx.editor.can().chain().undo().run(),
+      canRedo: ctx.editor.can().chain().redo().run(),
+    }),
   });
 
-  const baseBtn =
-    "flex items-center justify-center w-9 h-9 rounded-md border transition" +
-    "text-gray-700" +
-    "hover:bg-gray-100 active:bg-gray-100";
-
-  const activeBtn = "bg-slate-400 text-slate-50";
-  const disabledBtn = "opacity-40 cursor-not-allowed";
-
   return (
-    <div className="sticky top-0 flex flex-wrap items-center gap-1 mb-3 p-2">
-      {/* MARKS */}
-      <button
+    <div className="flex flex-wrap items-center gap-0.5 py-1.5 border-b border-slate-200 dark:border-slate-700 mb-0">
+      {/* Grupo 1: Marks */}
+      <ToolButton
         onClick={() => editor.chain().focus().toggleBold().run()}
-        disabled={!editorState.canBold}
-        className={`${baseBtn} ${editorState.isBold ? activeBtn : ""} ${
-          !editorState.canBold ? disabledBtn : ""
-        }`}
+        active={s.isBold}
+        disabled={!s.canBold}
+        title="Negrita"
       >
-        <Bold size={16} />
-      </button>
-
-      <button
+        <Bold size={15} />
+      </ToolButton>
+      <ToolButton
         onClick={() => editor.chain().focus().toggleItalic().run()}
-        disabled={!editorState.canItalic}
-        className={`${baseBtn} ${editorState.isItalic ? activeBtn : ""} ${
-          !editorState.canItalic ? disabledBtn : ""
-        }`}
+        active={s.isItalic}
+        disabled={!s.canItalic}
+        title="Cursiva"
       >
-        <Italic size={16} />
-      </button>
-
-      <button
+        <Italic size={15} />
+      </ToolButton>
+      <ToolButton
         onClick={() => editor.chain().focus().toggleStrike().run()}
-        disabled={!editorState.canStrike}
-        className={`${baseBtn} ${editorState.isStrike ? activeBtn : ""} ${
-          !editorState.canStrike ? disabledBtn : ""
-        }`}
+        active={s.isStrike}
+        disabled={!s.canStrike}
+        title="Tachado"
       >
-        <Strikethrough size={16} />
-      </button>
-
-      <button
+        <Strikethrough size={15} />
+      </ToolButton>
+      <ToolButton
         onClick={() => editor.chain().focus().toggleCode().run()}
-        disabled={!editorState.canCode}
-        className={`${baseBtn} ${editorState.isCode ? activeBtn : ""} ${
-          !editorState.canCode ? disabledBtn : ""
-        }`}
+        active={s.isCode}
+        disabled={!s.canCode}
+        title="Código inline"
       >
-        <Code2 size={16} />
-      </button>
+        <Code2 size={15} />
+      </ToolButton>
 
-      {/* PARAGRAPH + HEADINGS */}
-      <button
+      <Divider />
+
+      {/* Grupo 2: Tipo de bloque */}
+      <ToolButton
         onClick={() => editor.chain().focus().setParagraph().run()}
-        className={`${baseBtn} ${editorState.isParagraph ? activeBtn : ""}`}
+        active={s.isParagraph}
+        title="Párrafo"
       >
-        P
-      </button>
-
-      <button
+        <span className="text-xs font-medium">P</span>
+      </ToolButton>
+      <ToolButton
         onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-        className={`${baseBtn} ${editorState.isHeading1 ? activeBtn : ""}`}
+        active={s.isH1}
+        title="Título 1"
       >
-        <Heading1 size={16} />
-      </button>
-
-      <button
+        <Heading1 size={15} />
+      </ToolButton>
+      <ToolButton
         onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        className={`${baseBtn} ${editorState.isHeading2 ? activeBtn : ""}`}
+        active={s.isH2}
+        title="Título 2"
       >
-        <Heading2 size={16} />
-      </button>
-
-      <button
+        <Heading2 size={15} />
+      </ToolButton>
+      <ToolButton
         onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-        className={`${baseBtn} ${editorState.isHeading3 ? activeBtn : ""}`}
+        active={s.isH3}
+        title="Título 3"
       >
-        <Heading3 size={16} />
-      </button>
+        <Heading3 size={15} />
+      </ToolButton>
 
-      {/* LISTS */}
-      <button
+      <Divider />
+
+      {/* Grupo 3: Listas y bloques */}
+      <ToolButton
         onClick={() => editor.chain().focus().toggleBulletList().run()}
-        className={`${baseBtn} ${editorState.isBulletList ? activeBtn : ""}`}
+        active={s.isBulletList}
+        title="Lista"
       >
-        <List size={16} />
-      </button>
-
-      <button
+        <List size={15} />
+      </ToolButton>
+      <ToolButton
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        className={`${baseBtn} ${editorState.isOrderedList ? activeBtn : ""}`}
+        active={s.isOrderedList}
+        title="Lista numerada"
       >
-        <ListOrdered size={16} />
-      </button>
-
-      {/* BLOCKQUOTE */}
-      <button
+        <ListOrdered size={15} />
+      </ToolButton>
+      <ToolButton
         onClick={() => editor.chain().focus().toggleBlockquote().run()}
-        className={`${baseBtn} ${editorState.isBlockquote ? activeBtn : ""}`}
+        active={s.isBlockquote}
+        title="Cita"
       >
-        <Quote size={16} />
-      </button>
-
-      {/* CODE BLOCK */}
-      <button
+        <Quote size={15} />
+      </ToolButton>
+      <ToolButton
         onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-        className={`${baseBtn} ${editorState.isCodeBlock ? activeBtn : ""}`}
+        active={s.isCodeBlock}
+        title="Bloque de código"
       >
-        <Code2 size={16} />
-      </button>
+        <Code2 size={15} />
+      </ToolButton>
 
-      {/* UNDO / REDO */}
-      <button
+      <Divider />
+
+      {/* Grupo 4: Historia + imagen */}
+      <ToolButton
         onClick={() => editor.chain().focus().undo().run()}
-        disabled={!editorState.canUndo}
-        className={`${baseBtn} ${!editorState.canUndo ? disabledBtn : ""}`}
+        disabled={!s.canUndo}
+        title="Deshacer"
       >
-        <Undo2 size={16} />
-      </button>
-
-      <button
+        <Undo2 size={15} />
+      </ToolButton>
+      <ToolButton
         onClick={() => editor.chain().focus().redo().run()}
-        disabled={!editorState.canRedo}
-        className={`${baseBtn} ${!editorState.canRedo ? disabledBtn : ""}`}
+        disabled={!s.canRedo}
+        title="Rehacer"
       >
-        <Redo2 size={16} />
-      </button>
+        <Redo2 size={15} />
+      </ToolButton>
 
-      <button
-        onClick={() => {
-          document.getElementById("tiptap-image-upload")?.click();
-        }}
-        className={baseBtn}
+      <Divider />
+
+      <ToolButton
+        onClick={() => document.getElementById("tiptap-image-upload")?.click()}
+        title="Insertar imagen"
       >
-        <ImageIcon size={16} />
-      </button>
-
+        <ImageIcon size={15} />
+      </ToolButton>
       <input
         type="file"
         accept="image/*"
         id="tiptap-image-upload"
+        className="hidden"
         onChange={(e) => {
           const file = e.target.files?.[0];
           if (!file) return;
-
           const reader = new FileReader();
           reader.onload = () => {
             editor
-              ?.chain()
+              .chain()
               .focus()
               .setImage({ src: reader.result as string })
               .run();
           };
           reader.readAsDataURL(file);
         }}
-        className="hidden"
       />
     </div>
   );
