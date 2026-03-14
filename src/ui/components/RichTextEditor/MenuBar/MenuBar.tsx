@@ -51,11 +51,11 @@ export const MenuBar = ({ editor }: MenuBarProps) => {
   });
 
   const baseBtn =
-    "flex items-center justify-center w-9 h-9 rounded-md border transition " +
+    "flex items-center justify-center w-9 h-9 rounded-md border transition" +
     "text-gray-700" +
     "hover:bg-gray-100 active:bg-gray-100";
 
-  const activeBtn = "!bg-gray-100 !text-black ";
+  const activeBtn = "bg-slate-400 text-slate-50";
   const disabledBtn = "opacity-40 cursor-not-allowed";
 
   return (
