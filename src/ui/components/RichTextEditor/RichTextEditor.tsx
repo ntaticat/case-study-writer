@@ -7,9 +7,13 @@ import Image from "@tiptap/extension-image";
 
 type RichTextEditorProps = {
   initialContent?: string;
+  onChange?: (content: string) => void;
 };
 
-export const RichTextEditor = ({ initialContent }: RichTextEditorProps) => {
+export const RichTextEditor = ({
+  initialContent,
+  onChange,
+}: RichTextEditorProps) => {
   const editor = useEditor({
     extensions: [
       StarterKit.configure(),
@@ -21,6 +25,9 @@ export const RichTextEditor = ({ initialContent }: RichTextEditorProps) => {
       Image,
     ],
     content: initialContent,
+    onUpdate: ({ editor }) => {
+      onChange?.(JSON.stringify(editor.getJSON()));
+    },
   });
 
   return (

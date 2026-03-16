@@ -8,22 +8,42 @@ type ProjectLink = {
 
 type ProjectLinksProps = {
   initialLinks?: ProjectLink[];
+  onChange?: (links: ProjectLink[]) => void;
 };
 
 const LINK_SUGGESTIONS = ["Live", "Repositorio", "Docs", "Figma", "Video demo"];
 
-export const ProjectLinks = ({ initialLinks = [] }: ProjectLinksProps) => {
+export const ProjectLinks = ({
+  initialLinks = [],
+  onChange,
+}: ProjectLinksProps) => {
   const [links, setLinks] = useState<ProjectLink[]>(initialLinks);
 
-  const addLink = () => setLinks((prev) => [...prev, { label: "", url: "" }]);
+  const addLink = () => {
+    const updated = [...links, { label: "", url: "" }];
+    setLinks(updated);
+    onChange?.(updated);
+  };
 
-  const updateLink = (index: number, field: keyof ProjectLink, value: string) =>
+  const updateLink = (
+    index: number,
+    field: keyof ProjectLink,
+    value: string,
+  ) => {
+    const updated = links.map((link, i) =>
+      i === index ? { ...link, [field]: value } : link,
+    );
     setLinks((prev) =>
       prev.map((link, i) => (i === index ? { ...link, [field]: value } : link)),
     );
+    onChange?.(updated);
+  };
 
-  const removeLink = (index: number) =>
-    setLinks((prev) => prev.filter((_, i) => i !== index));
+  const removeLink = (index: number) => {
+    const updated = links.filter((_, i) => i !== index);
+    setLinks(updated);
+    onChange?.(updated);
+  };
 
   return (
     <div className="mt-8">

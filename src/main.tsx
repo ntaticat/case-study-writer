@@ -8,26 +8,36 @@ import UpdateCaseStudyPage from "./ui/pages/UpdateCaseStudyPage/UpdateCaseStudyP
 import CaseStudyPage from "./ui/pages/CaseStudyPage/CaseStudyPage";
 
 const router = createBrowserRouter([
+  // / Público
+  // /dashboard Privado
   {
-    path: "/",
+    path: "/:userId/case-studies", // Público
     element: <CaseStudiesPage />,
   },
   {
-    path: "/:id",
+    path: "/:userId/case-studies/:id", // Público
     element: <CaseStudyPage />,
   },
   {
-    path: "/:id/update",
-    element: <UpdateCaseStudyPage />,
+    path: "/case-studies", // Privado
+    element: <CaseStudiesPage />,
   },
   {
-    path: "/new",
+    path: "/case-studies/:id", // Privado
+    element: <CaseStudyPage />,
+  },
+  {
+    path: "/case-studies/new", // Privado
     element: <NewCaseStudyPage />,
+  },
+  {
+    path: "/case-studies/:id/update", // Privado
+    element: <UpdateCaseStudyPage />,
   },
 ]);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <RouterProvider router={router} />
-  </StrictMode>
+  </StrictMode>,
 );

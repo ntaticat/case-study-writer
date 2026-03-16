@@ -1,29 +1,86 @@
 import { Link } from "react-router-dom";
 
-const CaseStudyItem = () => {
+type CaseStudyItemProps = {
+  userId: string;
+  id: string;
+  title: string;
+  description: string;
+  imageUrl: string | null;
+  createdAt: string;
+  tags: string[];
+  index: number;
+};
+
+const ACCENT_COLORS = [
+  "border-l-slate-400",
+  "border-l-blue-300",
+  "border-l-emerald-300",
+  "border-l-amber-300",
+  "border-l-rose-300",
+  "border-l-violet-300",
+];
+
+const CaseStudyItem = ({
+  userId,
+  id,
+  title,
+  description,
+  imageUrl,
+  createdAt,
+  tags,
+  index,
+}: CaseStudyItemProps) => {
+  const accent = ACCENT_COLORS[index % ACCENT_COLORS.length];
+
   return (
-    <Link to={"1"}>
-      <article className="rounded-md overflow-hidden bg-neutral-100 shadow-md shadow-gray-400 transition hover:shadow-md hover:scale-[101%]">
-        <div className="flex flex-wrap">
-          <div className="flex flex-wrap content-between w-full p-3">
-            <div className="w-full">
-              <p className="text-left text-2xl mb-2">
-                Nombre del caso de estudio
-              </p>
-              <p className="text-justify hyphens-auto mb-2">
-                Una breve descrupción del caso de estudio que explique de qué se
-                trata y cuáles fueron los resultados obtenidos.
-              </p>
-            </div>
+    <Link to={`/${userId}/case-studies/${id}`} className="group block">
+      <article
+        className={`h-full border-l-4 ${accent} bg-slate-50 border border-slate-200
+          dark:border-slate-700 rounded-r-lg p-5 flex flex-col gap-3
+          transition-all duration-200 group-hover:border-slate-300
+          group-hover:shadow-sm`}
+        style={{ borderRadius: "0 8px 8px 0" }}
+      >
+        {imageUrl && (
+          <img
+            src={imageUrl}
+            alt={title}
+            className="w-full h-32 object-cover rounded-md"
+          />
+        )}
+
+        <time className="text-xs text-slate-400 tracking-wide">
+          {new Date(createdAt).toLocaleDateString("es-MX", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
+        </time>
+
+        <h2
+          className="font-serif text-lg font-semibold leading-snug text-slate-700
+                       dark:text-slate-200 group-hover:text-slate-900 transition-colors"
+        >
+          {title}
+        </h2>
+
+        <p className="text-sm text-slate-500 leading-relaxed line-clamp-3 flex-1">
+          {description}
+        </p>
+
+        {tags.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 pt-1">
+            {tags.map((tag) => (
+              <span
+                key={tag}
+                className="text-xs px-2 py-0.5 rounded-full bg-slate-100
+                           dark:bg-slate-800 text-slate-500"
+              >
+                {tag}
+              </span>
+            ))}
           </div>
-          <div className="p-3">
-            <img
-              className="w-full object-contain object-center rounded-lg overflow-hidden"
-              src="https://www.tradifyhq.com/hubfs/Imported_Blog_Media/website-design-2.png"
-              alt="projectImage"
-            />
-          </div>
-        </div>
+        )}
       </article>
     </Link>
   );
