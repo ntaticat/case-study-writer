@@ -45,7 +45,7 @@ const NewCaseStudyPage = () => {
       if (!response.ok) throw new Error("Error al guardar.");
 
       const data = await response.json();
-      navigate(`/${data.id}`);
+      navigate(`/case-studies/${data.id}`);
     } catch (error) {
       console.error(error);
     } finally {

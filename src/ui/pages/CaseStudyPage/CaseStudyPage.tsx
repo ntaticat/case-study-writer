@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { PageLayout } from "@/ui/layouts/PageLayout/PageLayout";
 import { generateHTML } from "@tiptap/core";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
+import { Pencil, Link as LinkIcon, Check } from "lucide-react";
 
 type ProjectLink = { label: string; url: string; order: number };
 
@@ -14,15 +15,16 @@ type CaseStudy = {
   content: string;
   imageUrl: string | null;
   createdAt: string;
-  UserId: string;
+  userId: string;
   tags: string[];
   links: ProjectLink[];
 };
 
-const CaseStudyPage = () => {
+const CaseStudyPage = ({ isOwner = false }: { isOwner?: boolean }) => {
   const { id } = useParams();
   const [caseStudy, setCaseStudy] = useState<CaseStudy | null>(null);
   const [loading, setLoading] = useState(true);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const fetch_ = async () => {
@@ -43,6 +45,15 @@ const CaseStudyPage = () => {
     fetch_();
   }, [id]);
 
+  const handleCopy = () => {
+    if (!caseStudy) return;
+    const publicUrl = `${window.location.origin}/${caseStudy.userId}/case-studies/${caseStudy.id}`;
+    navigator.clipboard.writeText(publicUrl).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
   if (loading)
     return (
       <PageLayout>
@@ -60,8 +71,40 @@ const CaseStudyPage = () => {
 
   return (
     <PageLayout>
-      {/* Header */}
       <header className="max-w-3xl mx-auto px-6 pt-10 pb-6">
+        {/* Barra de acciones */}
+        {isOwner && (
+          <div className="flex items-center gap-2 mb-8">
+            <button
+              onClick={handleCopy}
+              className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded
+                       border border-slate-200 text-slate-400
+                       hover:border-slate-300 hover:text-slate-600 transition-colors"
+            >
+              {copied ? (
+                <>
+                  <Check size={13} className="text-emerald-500" />
+                  <span className="text-emerald-500">Copiado</span>
+                </>
+              ) : (
+                <>
+                  <LinkIcon size={13} />
+                  Copiar enlace
+                </>
+              )}
+            </button>
+            <Link
+              to={`/case-studies/${caseStudy.id}/update`}
+              className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded
+                         border border-slate-200 text-slate-400
+                         hover:border-slate-300 hover:text-slate-600 transition-colors ml-auto"
+            >
+              <Pencil size={13} />
+              Editar
+            </Link>
+          </div>
+        )}
+
         {caseStudy.imageUrl && (
           <img
             src={caseStudy.imageUrl}
@@ -78,7 +121,7 @@ const CaseStudyPage = () => {
 
         <div className="flex flex-wrap items-center gap-3">
           <time className="text-xs text-slate-400">
-            {new Date(caseStudy.createdAt).toLocaleDateString("es-MX", {
+            {new Date(caseStudy.createdAt).toLocaleString("es-MX", {
               year: "numeric",
               month: "long",
               day: "numeric",
@@ -121,9 +164,9 @@ const CaseStudyPage = () => {
 
       <div className="border-t border-slate-200" />
 
-      {/* Contenido */}
       <article
         className="prose prose-slate max-w-3xl mx-auto px-6 py-10"
+        style={{ fontFamily: '"Source Serif 4", serif' }}
         dangerouslySetInnerHTML={{ __html: html }}
       />
     </PageLayout>

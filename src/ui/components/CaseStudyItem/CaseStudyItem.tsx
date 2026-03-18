@@ -9,6 +9,7 @@ type CaseStudyItemProps = {
   createdAt: string;
   tags: string[];
   index: number;
+  isOwner: boolean;
 };
 
 const ACCENT_COLORS = [
@@ -29,11 +30,15 @@ const CaseStudyItem = ({
   createdAt,
   tags,
   index,
+  isOwner = false,
 }: CaseStudyItemProps) => {
   const accent = ACCENT_COLORS[index % ACCENT_COLORS.length];
 
   return (
-    <Link to={`/${userId}/case-studies/${id}`} className="group block">
+    <Link
+      to={isOwner ? `/case-studies/${id}` : `/${userId}/case-studies/${id}`}
+      className="group block"
+    >
       <article
         className={`h-full border-l-4 ${accent} bg-slate-50 border border-slate-200
           dark:border-slate-700 rounded-r-lg p-5 flex flex-col gap-3

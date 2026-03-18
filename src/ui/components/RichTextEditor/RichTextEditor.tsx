@@ -24,7 +24,7 @@ export const RichTextEditor = ({
       }),
       Image,
     ],
-    content: initialContent,
+    content: initialContent ? JSON.parse(initialContent) : undefined,
     onUpdate: ({ editor }) => {
       onChange?.(JSON.stringify(editor.getJSON()));
     },

@@ -11,7 +11,7 @@ export const PageLayout = ({ children }: Props) => {
       <header className="sticky top-0 z-40 bg-white/80 backdrop-blur shadow-sm shadow-neutral-300">
         <div className="mx-auto flex h-16 max-w-3xl items-center justify-between px-6">
           <div className="flex items-center gap-3">
-            <Link to={"/"} className="text-lg font-semibold">
+            <Link to={"/case-studies"} className="text-lg font-semibold">
               Case Studies Writer
             </Link>
           </div>
